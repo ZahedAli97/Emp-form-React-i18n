@@ -1,0 +1,251 @@
+/////////////EmployeeForm.js//////////////////////////
+
+import React, { useState } from "react";
+import SkillList from "./FormComponents/SkillList";
+import GenderList from "./FormComponents/GenderList";
+import { connect } from "react-redux";
+import { change_input } from "../ActionCreators/EmployeeFormAC";
+import Form from "react-bootstrap/Form";
+
+let bypass = null; //For diplaying error message related to field
+
+function EmployeeForm(props) {
+  const handleChange = e => {
+    props.dispatch(change_input(e.target.name, e.target.value));
+  };
+  const onfocus = e => {
+    bypass = null;
+    props.dispatch(change_input("error_msg", ""));
+  };
+
+  const validate = e => {
+    if (!e.target.checkValidity()) {
+      bypass = e.target.name;
+      props.dispatch(change_input("error_msg", e.target.validationMessage));
+    }
+  };
+
+  const handleComponents = e => {
+    if (props.gender === "") {
+      props.dispatch(change_input("error_msg", "Please Select a Gender."));
+    }
+    if (props.skills === null) {
+      props.dispatch(change_input("error_msg", "Select atleast one Skill."));
+    }
+  };
+
+  const handleImage = event => {
+    let data;
+    let reader = new FileReader();
+    if (event.target.files && event.target.files[0]) {
+      reader.onload = function(e) {
+        data = e.target.result;
+        props.dispatch(change_input("profilePic", data));
+      };
+      let imgbase64 = reader.readAsDataURL(event.target.files[0]);
+    }
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    // 0: input-id
+    // 1: input-name
+    // 2: input-password
+    // 3: input-mobile
+    // 4: input-email
+    // 5: input-D.O.B
+    // 10: input-Profile Pic
+
+    if (!e.target[1].checkValidity()) {
+      console.log(e.target[1].name);
+      bypass = e.target[1].name;
+      props.dispatch(change_input("error_msg", e.target[1].validationMessage));
+      return false;
+    }
+    if (!e.target[2].checkValidity()) {
+      console.log(e.target[2].name);
+      bypass = e.target[2].name;
+      props.dispatch(change_input("error_msg", e.target[1].validationMessage));
+      return false;
+    }
+    if (!e.target[3].checkValidity()) {
+      console.log(e.target[3].name);
+      bypass = e.target[3].name;
+      props.dispatch(change_input("error_msg", e.target[3].validationMessage));
+      return false;
+    }
+    if (!e.target[4].checkValidity()) {
+      console.log(e.target[4].name);
+      bypass = e.target[4].name;
+      props.dispatch(change_input("error_msg", e.target[4].validationMessage));
+      return false;
+    }
+    if (!e.target[5].checkValidity()) {
+      console.log(e.target[5].name);
+      bypass = e.target[5].name;
+      props.dispatch(change_input("error_msg", e.target[5].validationMessage));
+      return false;
+    }
+    if (props.gender === "") {
+      props.dispatch(change_input("error_msg", "Please Select a Gender."));
+      return false;
+    }
+    if (props.skills === null) {
+      props.dispatch(change_input("error_msg", "Select atleast one Skill."));
+      return false;
+    }
+    if (!e.target[10].checkValidity()) {
+      bypass = e.target[10].name;
+      props.dispatch(change_input("error_msg", e.target[10].validationMessage));
+      return false;
+    }
+
+    alert("Your form is correct!");
+  };
+
+  return (
+    <>
+      <h1>Employee Form</h1>
+      <Form>
+        <form onSubmit={handleSubmit} noValidate>
+          <input type="hidden" name="Id" />
+
+          {/* <Form.Group controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Text className="text-muted">
+              We'll never share your email with anyone else.
+            </Form.Text>
+          </Form.Group> */}
+          <Form.Group controlId="formBasicName">
+            <Form.Label>Name:</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              required
+              onChange={handleChange}
+              onFocus={onfocus}
+              onBlur={validate}
+            />
+            {bypass === "name" && <p>--{props.error_msg}</p>}
+          </Form.Group>
+          <br />
+
+          <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password:</Form.Label>
+          <input
+            type="password"
+            name="password"
+            required
+            onChange={handleChange}
+            onFocus={onfocus}
+            onBlur={validate}
+          />
+          {bypass === "password" && <p>--{props.error_msg}</p>}
+          <br />
+
+          <Form.Label>Mobile:</Form.Label>
+          <input
+            type="tel"
+            name="mobile"
+            pattern="[0-9]{10}"
+            required
+            onChange={handleChange}
+            onFocus={onfocus}
+            onBlur={validate}
+          />
+          {bypass === "mobile" && <p>--{props.error_msg}</p>}
+
+          <br />
+
+          <Form.Label>Email:</Form.Label>
+          <input
+            type="email"
+            name="email"
+            required
+            onChange={handleChange}
+            onFocus={onfocus}
+            onBlur={validate}
+          />
+          {bypass === "email" && <p>--{props.error_msg}</p>}
+
+          <br />
+
+          <label>Date of Birth:</label>
+          <input
+            type="date"
+            name="dateOfBirth"
+            min="01-01-1900"
+            max="-12-31"
+            required
+            onChange={handleChange}
+            onFocus={onfocus}
+            onBlur={validate}
+          />
+          {bypass === "dateOfBirth" && <p>--{props.error_msg}</p>}
+
+          <br />
+
+          <div onFocus={onfocus} onBlur={handleComponents}>
+            <GenderList />
+          </div>
+          {props.error_msg === "Please Select a Gender." && (
+            <p>{props.error_msg}</p>
+          )}
+          <br />
+
+          <div onFocus={onfocus} onBlur={handleComponents}>
+            <SkillList />
+          </div>
+          {props.error_msg === "Select atleast one Skill." && (
+            <p>{props.error_msg}</p>
+          )}
+          <br />
+
+          <label htmlFor="avatar">Choose a profile picture:</label>
+          <br />
+          <input
+            type="file"
+            id="avatar"
+            name="avatar"
+            accept="image/png, image/jpeg"
+            required
+            onFocus={onfocus}
+            onBlur={validate}
+            onChange={handleImage}
+          />
+          {bypass === "avatar" && <p>--{props.error_msg}</p>}
+
+          {props.profilePic !== undefined && (
+            <>
+              <img src={props.profilePic} alt="profile-pic" />
+            </>
+          )}
+          <br />
+
+          <input type="submit" value="SUBMIT" />
+        </form>
+      </Form>
+    </>
+  );
+}
+
+function mapStateToProps(state) {
+  return {
+    id: state.id,
+    name: state.name,
+    password: state.password,
+    mobile: state.mobile,
+    email: state.email,
+    dateOfBirth: state.dateOfBirth,
+    gender: state.gender,
+    skills: state.skills,
+    profilePic: state.profilePic,
+    error_msg: state.error_msg
+  };
+}
+
+const connectedComponent = connect(mapStateToProps);
+
+export default connectedComponent(EmployeeForm);
