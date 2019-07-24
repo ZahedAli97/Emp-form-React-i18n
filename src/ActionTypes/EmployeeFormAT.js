@@ -1,1 +1,3 @@
 export const CHANGE_INPUT = "CHANGE_INPUT";
+
+export const LOGIN_EMPLOYEE = "LOGIN_EMPLOYEE";

@@ -22,6 +22,7 @@ function SkillList(props) {
   };
   return (
     <CreatableSelect
+      className="text-dark"
       isMulti
       value={props.skills}
       onChange={handleChange}

@@ -10,6 +10,7 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import Axios from "axios";
 
 let bypass = null; //For diplaying error message related to field
 
@@ -104,14 +105,30 @@ function EmployeeForm(props) {
       props.dispatch(change_input("error_msg", e.target[10].validationMessage));
       return false;
     }
-
-    alert("Your form is correct!");
+    let sendskills = "";
+    for (let skill of props.skills) {
+      sendskills += `${skill.value} `;
+    }
+    const payload = {
+      id: props.id,
+      name: props.name,
+      password: props.password,
+      mobile: props.mobile,
+      email: props.email,
+      gender: props.gender,
+      skills: sendskills,
+      birthday: props.dateOfBirth,
+      image: props.profilePic
+    };
+    Axios.post("http://localhost:8080/employes/addemploye", payload)
+      .then(res => props.dispatch(change_input("loginId", res.data)))
+      .catch(err => console.log(err.response));
   };
 
   return (
     <>
       <Card
-        className="shadow rounded"
+        className="bg-dark text-white shadow rounded"
         style={{ width: "50rem", height: "50rem", margin: "auto" }}
       >
         {" "}
@@ -130,7 +147,7 @@ function EmployeeForm(props) {
             </Form.Text>
           </Form.Group> */}
             <Form.Group as={Row} controlId="formBasicName">
-              <Form.Label column sm={2}>
+              <Form.Label column sm={2} lg={2}>
                 Name:
               </Form.Label>
               <Col sm={10}>
@@ -261,8 +278,7 @@ function EmployeeForm(props) {
               </Form.Label>
               <br />
               <Col sm={10}>
-                <div className="bg-primary rounded shadow-lg">
-                  <Form.Text className="text-muted">Choose a Picture</Form.Text>
+                <div>
                   <Form.Control
                     type="file"
                     id="avatar"
@@ -272,7 +288,8 @@ function EmployeeForm(props) {
                     onFocus={onfocus}
                     onBlur={validate}
                     onChange={handleImage}
-                    style={{ opacity: "0" }}
+                    style={{ opacity: "0.5", width: "15rem" }}
+                    className="bg-info rounded shadow-lg"
                   />
                 </div>
                 {props.profilePic !== undefined && (
@@ -290,7 +307,9 @@ function EmployeeForm(props) {
               </Col>
             </Form.Group>
             <div className="text-center">
-              <Button type="submit">SUBMIT</Button>
+              <Button variant="outline-info" type="submit">
+                SUBMIT
+              </Button>
             </div>
             {/* </form> */}
           </Form>
