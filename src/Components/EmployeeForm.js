@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SkillList from "./FormComponents/SkillList";
 import GenderList from "./FormComponents/GenderList";
 import { connect } from "react-redux";
-import { change_input } from "../ActionCreators/EmployeeFormAC";
+import { change_input, register_user } from "../ActionCreators/EmployeeFormAC";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -120,9 +120,8 @@ function EmployeeForm(props) {
       birthday: props.dateOfBirth,
       image: props.profilePic
     };
-    Axios.post("http://localhost:8080/employes/addemploye", payload)
-      .then(res => props.dispatch(change_input("loginId", res.data)))
-      .catch(err => console.log(err.response));
+
+    props.dispatch(register_user(payload));
   };
 
   return (

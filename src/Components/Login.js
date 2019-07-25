@@ -13,9 +13,8 @@ function Login(props, RouteComponentProps) {
       email: e.target[0].value,
       password: e.target[1].value
     };
-    Axios.post("http://localhost:8080/employes/getemployelogin", body)
-      .then(res => props.dispatch(login_employee(res.data)))
-      .catch(err => console.log(err));
+
+    props.dispatch(login_employee(body));
 
     props.history.push("/home");
   };

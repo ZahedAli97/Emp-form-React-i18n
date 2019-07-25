@@ -1,7 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 function Home(props) {
+  if (!props.isLoggedIn) {
+    return <Redirect to="/" />;
+  }
   return (
     <>
       <h1>Home</h1>
@@ -46,7 +50,8 @@ function mapStateToProps(state) {
     dateOfBirth: state.dateOfBirth,
     gender: state.gender,
     skills: state.skills,
-    profilePic: state.profilePic
+    profilePic: state.profilePic,
+    isLoggedIn: state.isLoggedIn
   };
 }
 
