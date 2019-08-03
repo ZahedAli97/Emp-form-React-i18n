@@ -3,6 +3,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
+    url("tryback.jpg");
+  background-repeat: repeat;
+  /* repeatthe image */
+  background-size: cover;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -10,4 +17,17 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.myback {
+  background-color: #54b9f85f;
+}
+
+.mytext {
+  color: #54b9f85f;
+}
+
+.mynewback {
+  background-color: rgba(255, 255, 255, 0.5);
+  background: transparent;
 }

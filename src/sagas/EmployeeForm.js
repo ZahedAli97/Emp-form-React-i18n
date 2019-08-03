@@ -3,7 +3,11 @@ import {
   register_user_failure,
   register_user_success,
   login_employee_failure,
-  login_employee_success
+  login_employee_success,
+  get_data_failure,
+  get_data_success,
+  update_data_success,
+  update_data_failure
 } from "../ActionCreators/EmployeeFormAC";
 import axios from "axios";
 
@@ -23,7 +27,7 @@ export function* registerUser(action) {
   } catch (err) {
     localStorage.setItem("loginId", "");
     localStorage.setItem("isLoggedIn", false);
-
+    alert("Email already exists please Login.");
     yield put(register_user_failure(err));
   }
 }
@@ -47,7 +51,34 @@ export function* loginUser(action) {
   } catch (err) {
     localStorage.setItem("isLoggedIn", false);
     localStorage.setItem("loginId", "");
-
+    alert(err);
     yield put(login_employee_failure(err));
+  }
+}
+
+export function* getData() {
+  try {
+    const getDataResponse = yield axios.get(
+      `http://localhost:8080/employes//getbyid/${localStorage.getItem(
+        "loginId"
+      )}`
+    );
+    yield put(get_data_success(getDataResponse.data));
+  } catch (err) {
+    yield put(get_data_failure(err));
+  }
+}
+
+export function* updateData(action) {
+  try {
+    const payload = action.payload;
+    const updateResponse = yield axios.put(
+      "http://localhost:8080/employes/updemploye",
+      payload
+    );
+    yield put(update_data_success(updateResponse));
+  } catch (err) {
+    alert(err);
+    yield put(update_data_failure(err));
   }
 }

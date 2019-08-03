@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { change_input } from "../../ActionCreators/EmployeeFormAC";
 
 function GenderList(props) {
-  // const [option, setOption] = useState("male");
-
   const list = [
     { id: "male", name: "male", value: "Male" },
     { id: "female", name: "female", value: "Female" },

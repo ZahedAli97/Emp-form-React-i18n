@@ -1,8 +1,12 @@
+// Not using as of Now.
+
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Axios from "axios";
 import { login_employee } from "../ActionCreators/EmployeeFormAC";
 import { connect } from "react-redux";
+
+//import { Link } from "react-router-dom";
 // import { BrowserRouter } from "react-router-dom";
 //import { RouteComponentProps } from "react-router";
 
@@ -16,7 +20,8 @@ function Login(props, RouteComponentProps) {
 
     props.dispatch(login_employee(body));
 
-    props.history.push("/home");
+    //props.history.replace("/home");
+    return <Redirect to="/home" />;
   };
   return (
     <>

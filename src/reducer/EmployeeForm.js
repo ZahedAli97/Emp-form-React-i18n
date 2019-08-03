@@ -6,7 +6,13 @@ import {
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAILURE,
   LOGIN_EMPLOYEE_SUCCESS,
-  LOGIN_EMPLOYEE_FAILURE
+  LOGIN_EMPLOYEE_FAILURE,
+  GET_DATA,
+  GET_DATA_SUCCESS,
+  GET_DATA_FAILURE,
+  UPDATE_DATA_SUCCESS,
+  UPDATE_DATA_FAILURE,
+  UPDATE_DATA
 } from "../ActionTypes/EmployeeFormAT";
 
 const initialState = {
@@ -23,7 +29,8 @@ const initialState = {
   error_msg: "",
   loginId: localStorage.getItem("loginId"),
   isLoading: false,
-  failure_error: ""
+  failure_error: "",
+  lang: localStorage.getItem("lang") || "en"
 };
 
 export default function EmployeeFormReducer(prevState = initialState, action) {
@@ -41,7 +48,7 @@ export default function EmployeeFormReducer(prevState = initialState, action) {
         draft.loginId = action.data.id;
         draft.name = action.data.name;
         draft.password = action.data.password;
-        draft.mobile = action.data.password;
+        draft.mobile = action.data.mobile;
         draft.email = action.data.email;
         draft.dateOfBirth = action.data.birthday;
         draft.gender = action.data.gender;
@@ -56,6 +63,7 @@ export default function EmployeeFormReducer(prevState = initialState, action) {
         draft.isLoading = false;
         draft.isLoggedIn = "true" === localStorage.getItem("isLoggedIn");
         break;
+      case UPDATE_DATA:
       case REGISTER_USER:
         draft.isLoading = true;
         draft.failure_error = "";
@@ -68,6 +76,31 @@ export default function EmployeeFormReducer(prevState = initialState, action) {
       case REGISTER_USER_FAILURE:
         draft.failure_error = action.err;
         draft.isLoading = false;
+        break;
+      case GET_DATA:
+        draft.isLoading = true;
+        draft.failure_error = "";
+        break;
+      case UPDATE_DATA_SUCCESS:
+      case GET_DATA_SUCCESS:
+        draft.loginId = action.data.id;
+        draft.name = action.data.name;
+        draft.password = action.data.password;
+        draft.mobile = action.data.mobile;
+        draft.email = action.data.email;
+        draft.dateOfBirth = action.data.birthday;
+        draft.gender = action.data.gender;
+        draft.skills = action.data.skills;
+        draft.profilePic = action.data.image;
+        draft.isLoading = false;
+        draft.failure_error = "";
+        draft.isLoggedIn = "true" === localStorage.getItem("isLoggedIn");
+        break;
+      case UPDATE_DATA_FAILURE:
+      case GET_DATA_FAILURE:
+        draft.failure_error = action.err;
+        draft.isLoading = false;
+        draft.isLoggedIn = "true" === localStorage.getItem("isLoggedIn");
         break;
     }
   });

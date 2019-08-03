@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import Select from "react-select";
+import React, { useEffect } from "react";
 import CreatableSelect from "react-select/creatable";
 import { connect } from "react-redux";
-import { change_input } from "../../ActionCreators/EmployeeFormAC";
 
 function SkillList(props) {
+  let oldskills = localStorage.getItem("customskills");
+  oldskills = JSON.parse(oldskills);
+
+  let storeOptions = "";
   const options = [
     { value: "java", label: "Java" },
     { value: "c", label: "C" },
@@ -15,16 +17,16 @@ function SkillList(props) {
     { value: "react", label: "React" }
   ];
 
-  //const [option, setOption] = useState(null);
-
   const handleChange = option => {
-    props.dispatch(change_input("skills", option));
+    storeOptions = JSON.stringify(option);
+    localStorage.setItem("customskills", storeOptions);
+    props.onChange(option);
   };
   return (
     <CreatableSelect
       className="text-dark"
       isMulti
-      value={props.skills}
+      value={oldskills}
       onChange={handleChange}
       options={options}
     />
@@ -32,7 +34,7 @@ function SkillList(props) {
 }
 
 function mapStateToProps(state) {
-  return { skills: state.skills };
+  return {};
 }
 
 const connectedComponent = connect(mapStateToProps);
